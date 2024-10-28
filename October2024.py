@@ -178,29 +178,89 @@ def il_grande_main():
     if counter == 100:
         return "Diocane, more counters"
     numbers = best_params_first[0]
-    # Esegui la sostituzione
-    new_chessboard = np.array(replace_values(chessboard, numbers))
 
-    total_sum = 0
+    value = 0
     counter = 0
-    while total_sum != 2024 and counter < 1000:
+    while value != 2024:
         counter += 1
-        second_path = path_generator((0, 5), (5, 0))
+        second_path = path_generator((5, 0), (0, 5))
         # Select the elements using the indices
-        selected_elements = [new_chessboard[i, j] for i, j in second_path]
-    #    Calculate the sum of the selected elements
-        total_sum = sum(selected_elements)
-        if total_sum != 2024:
+        list_of_letter_second = path_to_list(second_path)
+        score_second = calculate_symbolic_score(list_of_letter_second)
+        print(score_second)
+        print(numbers)
+        value = score_second.subs({'A': numbers[0], 'B': numbers[1], 'C': numbers[2]})
+        print(value)
+    #   Calculate the sum of the selected elements
+        if value != 2024:
             print("Nope, try again")
-    if counter == 100:
-        print("Diocane, more counters in second loop")
-        return 0
-
-    print('voila')
+        elif value == 2024:
+            print('voila')
     print(first_path)
     print(second_path)
     print(numbers)
+    return second_path, first_path, numbers
+def il_grande_main2():
+    numbers = [1, 2, 3]
+    value1 = 0
+    value2 = 0
+    counter = 0
+    for perm in permutations(range(1, 100), 3):
+        print("perm:")
+        print(perm)
+        while value1 != 2024:
+            counter += 1
+            first_path = path_generator((0, 0), (5, 5))
+            list_of_letter_first = path_to_list(first_path)
+            score_first = calculate_symbolic_score(list_of_letter_first)
+            value1 = score_first.subs({'A': perm[0], 'B': perm[1], 'C': perm[2]})
+            if value1 == 2024 or counter == 1000:
+                break
+        while value2 != 2024:
+            counter += 1
+            second_path = path_generator((5, 0), (0, 5))
+            list_of_letter_second = path_to_list(second_path)
+            score_second = calculate_symbolic_score(list_of_letter_second)
+            value2 = score_second.subs({'A': perm[0], 'B': perm[1], 'C': perm[2]})
+            if value2 == 2024 or counter == 1000:
+                break
+
     return second_path, first_path
 
-il_grande_main()
+
+secondo, primo, numeri = il_grande_main()
+
+
+
+
+columns = ['a', 'b', 'c', 'd', 'e', 'f']
+rows = ['6', '5', '4', '3', '2', '1']
+
+# Convert tuples to labels
+# Funzione per convertire una coppia (i, j) in formato 'colonna+riga'
+def convert_to_matrix_label(i, j):
+    col_label = columns[j]
+    row_label = rows[i]
+    return f"{col_label}{row_label}"
+
+# Converte gli elementi di list1 e list2
+primo_converted = [convert_to_matrix_label(i, j) for i, j in primo]
+secondo_converted = [convert_to_matrix_label(i, j) for i, j in secondo]
+
+# Display the labels
+
+secondo_formattata = ','.join(secondo_converted)
+primo_formattata = ','.join(primo_converted)
+
+
+check1 = path_to_list(primo)
+check2 = path_to_list(secondo)
+
+check1 = calculate_symbolic_score(check1)
+check2 = calculate_symbolic_score(check2)
+print(primo_formattata)
+print(secondo_formattata)
+print('somme:')
+print(check1.subs({'A': numeri[0], 'B': numeri[1], 'C': numeri[2]}))
+print(check2.subs({'A': numeri[0], 'B': numeri[1], 'C': numeri[2]}))
 

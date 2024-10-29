@@ -165,7 +165,7 @@ def il_grande_main():
     while check == "I failed" and counter < 1000:
         counter += 1
         #while best_params is None and score_num > 50:
-        first_path = path_generator((0, 0), (5, 5))
+        first_path = path_generator((5, 0), (0, 5))
         list_of_attempted_path.append(first_path)
         list_of_letter_first = path_to_list(first_path)
         score_first = calculate_symbolic_score(list_of_letter_first)
@@ -178,12 +178,11 @@ def il_grande_main():
     if counter == 100:
         return "Diocane, more counters"
     numbers = best_params_first[0]
-
     value = 0
     counter = 0
     while value != 2024:
         counter += 1
-        second_path = path_generator((5, 0), (0, 5))
+        second_path = path_generator((0, 0), (5, 5))
         # Select the elements using the indices
         list_of_letter_second = path_to_list(second_path)
         score_second = calculate_symbolic_score(list_of_letter_second)

@@ -1,7 +1,8 @@
 import numpy as np
 import random
+from tqdm import tqdm
 import matplotlib.pyplot as plt
-rolls = int(1e5)
+rolls = int(1e9)
 L = 1
 counter = 0
 track = []
@@ -36,8 +37,7 @@ def area_in_target(position: str, red_dot: np.array, blue_dot: np.array):
         return 0
 
 
-for i in range(rolls):
-    print(i)
+for i in tqdm(range(rolls)):
     blue = np.random.uniform(0, L, 2)
     red = np.random.uniform(0, L, 2)
     side = compute_nearest(blue)

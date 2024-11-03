@@ -32,8 +32,7 @@ def area_in_target(position: str, red_dot: np.array, blue_dot: np.array):
     distance_ref_0 = np.linalg.norm(blue_dot - sides[0])
     distance_ref_1 = np.linalg.norm(blue_dot - sides[1])
 
-    # The condition below is wrong.
-    if distance_0 <= distance_ref_0 or distance_1 <= distance_ref_1:
+    if (distance_0 <= distance_ref_0 or distance_1 <= distance_ref_1) and not (distance_0 <= distance_ref_0 and distance_1 <= distance_ref_1):
         return 1
     else:
         return 0

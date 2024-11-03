@@ -2,7 +2,7 @@ import numpy as np
 import random
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-rolls = int(1e9)
+rolls = int(8e6)
 L = 1
 counter = 0
 track = []
@@ -31,15 +31,26 @@ def area_in_target(position: str, red_dot: np.array, blue_dot: np.array):
 
     distance_ref_0 = np.linalg.norm(blue_dot - sides[0])
     distance_ref_1 = np.linalg.norm(blue_dot - sides[1])
+
+    # The condition below is wrong.
     if distance_0 <= distance_ref_0 or distance_1 <= distance_ref_1:
         return 1
     else:
         return 0
 
 
+def uniform_exclusive(lower, upper, size):
+    values = np.random.uniform(lower, upper, size)
+    while np.any(values == lower) or np.any(values == upper):
+        mask = (values == lower) | (values == upper)
+        values[mask] = np.random.uniform(lower, upper, np.sum(mask))
+    return values
+
 for i in tqdm(range(rolls)):
-    blue = np.random.uniform(0, L, 2)
+    # blue = np.random.uniform(0, L, 2)
     red = np.random.uniform(0, L, 2)
+    blue = uniform_exclusive(0, L, 2)
+    red = uniform_exclusive(0, L, 2)
     side = compute_nearest(blue)
     counter += area_in_target(side, red, blue)
     track.append(counter)
@@ -49,3 +60,4 @@ track = track / np.arange(1, len(track)+1)
 plt.plot(track[2:])
 plt.grid(True)
 plt.show()
+print(track[-1])

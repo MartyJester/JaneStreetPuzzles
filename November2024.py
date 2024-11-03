@@ -2,7 +2,7 @@ import numpy as np
 import random
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-rolls = int(8e6)
+rolls = int(1e7)
 L = 1
 counter = 0
 track = []
@@ -19,20 +19,20 @@ def compute_nearest(array):
 
 def area_in_target(position: str, red_dot: np.array, blue_dot: np.array):
     if position == 'bottom':
-        sides = np.array([[0, 0], [1, 0]])
+        sides = np.array([[0, 0], [L, 0]])
     if position == 'left':
-        sides = np.array([[0, 0], [0, 1]])
+        sides = np.array([[0, 0], [0, L]])
     if position == 'top':
-        sides = np.array([[0, 1], [1, 1]])
+        sides = np.array([[0, L], [1, L]])
     if position == 'right':
-        sides = np.array([[1, 0], [1, 1]])
+        sides = np.array([[L, 0], [L, L]])
     distance_0 = np.linalg.norm(red_dot - sides[0])
     distance_1 = np.linalg.norm(red_dot - sides[1])
 
     distance_ref_0 = np.linalg.norm(blue_dot - sides[0])
     distance_ref_1 = np.linalg.norm(blue_dot - sides[1])
 
-    if (distance_0 <= distance_ref_0 or distance_1 <= distance_ref_1) and not (distance_0 <= distance_ref_0 and distance_1 <= distance_ref_1):
+    if (distance_0 <= distance_ref_0 or distance_1 <= distance_ref_1) and not (distance_0 < distance_ref_0 and distance_1 < distance_ref_1):
         return 1
     else:
         return 0
@@ -47,7 +47,7 @@ def uniform_exclusive(lower, upper, size):
 
 for i in tqdm(range(rolls)):
     # blue = np.random.uniform(0, L, 2)
-    red = np.random.uniform(0, L, 2)
+    # red = np.random.uniform(0, L, 2)
     blue = uniform_exclusive(0, L, 2)
     red = uniform_exclusive(0, L, 2)
     side = compute_nearest(blue)

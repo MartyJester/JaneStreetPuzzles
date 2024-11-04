@@ -2,7 +2,7 @@ import numpy as np
 import random
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-rolls = int(1e7)
+rolls = int(1e9)
 L = 1
 counter = 0
 track = []
@@ -45,15 +45,16 @@ def uniform_exclusive(lower, upper, size):
         values[mask] = np.random.uniform(lower, upper, np.sum(mask))
     return values
 
+
 for i in tqdm(range(rolls)):
-    # blue = np.random.uniform(0, L, 2)
-    # red = np.random.uniform(0, L, 2)
     blue = uniform_exclusive(0, L, 2)
     red = uniform_exclusive(0, L, 2)
+    if blue[0] == blue[1]:
+        continue
     side = compute_nearest(blue)
     counter += area_in_target(side, red, blue)
     track.append(counter)
-
+#
 track = np.array(track)
 track = track / np.arange(1, len(track)+1)
 plt.plot(track[2:])

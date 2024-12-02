@@ -1,5 +1,4 @@
 import numpy as np
-import random
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 rolls = int(1e9)
